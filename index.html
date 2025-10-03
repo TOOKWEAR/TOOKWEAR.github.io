@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Kleines Portfolio | Beispielseite erstellt für GitHub Pages oder Netlify.">
+  <title>Kleines Portfolio</title>
+  <link rel="icon" href="data:,">
+  <style>
+    :root{--bg:#0f1724;--card:#0b1320;--accent:#06b6d4;--muted:#94a3b8;--radius:12px}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial;line-height:1.4;background:linear-gradient(180deg,#071123 0%,var(--bg) 100%);color:#e6eef6;padding:32px}
+    .container{max-width:980px;margin:0 auto}
+    header{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px}
+    h1{font-size:1.6rem;margin:0}
+    nav a{color:var(--muted);text-decoration:none;margin-left:18px}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.08));padding:22px;border-radius:var(--radius);box-shadow:0 6px 20px rgba(2,6,23,0.6)}
+    .hero{display:grid;grid-template-columns:1fr 320px;gap:20px;align-items:center;margin-bottom:20px}
+    .hero p{color:var(--muted);margin-top:8px}
+    .avatar{width:100%;max-width:280px;border-radius:10px;overflow:hidden}
+    .projects{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:18px}
+    .project{padding:14px;border-radius:10px;background:rgba(255,255,255,0.02)}
+    .btn{display:inline-block;padding:10px 14px;border-radius:10px;background:var(--accent);color:#012; text-decoration:none;font-weight:600}
+    footer{color:var(--muted);font-size:0.9rem;margin-top:24px;text-align:center}
+    @media (max-width:760px){
+      .hero{grid-template-columns:1fr}
+      nav a{display:inline-block;margin-left:10px}
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1 class="site-title">Kleines Portfolio</h1>
+      <nav>
+        <a href="#about">Über</a>
+        <a href="#projects">Projekte</a>
+        <a href="#contact">Kontakt</a>
+      </nav>
+    </header>
+
+    <section class="card hero" id="home">
+      <div>
+        <h2>Hallo — ich bin Max Mustermann.</h2>
+        <p>Eine einfache, schnelle und responsiv gestaltete Demo-Webseite zum sofortigen Hochladen auf GitHub Pages oder Netlify.</p>
+        <p><a class="btn" href="#contact">Kontaktiere mich</a></p>
+      </div>
+      <div class="avatar">
+        <img alt="Avatar" src="https://via.placeholder.com/600x400.png?text=Dein+Bild" style="width:100%;display:block;">
+      </div>
+    </section>
+
+    <section id="about" class="card" style="margin-top:16px">
+      <h3>Über diese Seite</h3>
+      <p class="muted">Diese Seite ist minimal gehalten: lediglich HTML, CSS und ein bisschen Inline-JS. Perfekt für statische Hosting-Anbieter wie GitHub Pages.</p>
+    </section>
+
+    <section id="projects" style="margin-top:16px">
+      <h3>Projekte</h3>
+      <div class="projects">
+        <article class="project card">
+          <h4>Projekt A</h4>
+          <p class="muted">Kurzbeschreibung des Projekts. Links und Screenshots kannst du hier hinzufügen.</p>
+          <p><a href="#" class="btn">Details</a></p>
+        </article>
+        <article class="project card">
+          <h4>Projekt B</h4>
+          <p class="muted">Noch ein Projekt — ersetze diesen Text mit eigenen Inhalten.</p>
+          <p><a href="#" class="btn">Details</a></p>
+        </article>
+      </div>
+    </section>
+
+    <section id="contact" class="card" style="margin-top:16px">
+      <h3>Kontakt</h3>
+      <p>Schick eine Mail an <a href="mailto:mail@example.com">mail@example.com</a> oder benutze das Formular unten.</p>
+      <form onsubmit="event.preventDefault();alert('Danke — Dein Formular wurde (lokal) abgeschickt.');" style="margin-top:12px;display:grid;gap:8px;max-width:520px">
+        <input required placeholder="Dein Name" style="padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:inherit">
+        <input type="email" required placeholder="E-Mail" style="padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:inherit">
+        <textarea required placeholder="Nachricht" style="padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:inherit;min-height:90px"></textarea>
+        <button class="btn" type="submit">Nachricht senden</button>
+      </form>
+    </section>
+
+    <footer>
+      <p>Made with ♥ — Passe den Inhalt an und lade <code>index.html</code> in dein GitHub-Repository hoch.</p>
+    </footer>
+  </div>
+
+  <script>
+    // Kleines JS: Scroll-to-Anchor für glatteres Erlebnis
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click',e=>{
+        const target=document.querySelector(a.getAttribute('href'));
+        if(target){e.preventDefault();target.scrollIntoView({behavior:'smooth',block:'start'});}
+      });
+    });
+  </script>
+</body>
+</html>
