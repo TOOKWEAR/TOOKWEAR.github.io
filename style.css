@@ -35,6 +35,19 @@ html, body {
   padding: 15px 30px;
 }
 
+/* Logo Styling */
+.nav-logo {
+  display: flex;
+  align-items: center;
+  margin-right: 1rem;
+}
+
+.server-icon {
+  width: 40px;  /* Größe des Icons */
+  height: 40px;
+  border-radius: 10px;
+  object-fit: cover;
+}
 .nav-container {
   display: flex;
   justify-content: space-around;
