@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // Animated welcome text
   const title = document.querySelector("h1");
   let i = 0;
-  const text = "Willkommen auf TOOK WEAR";
+  const text = "Willkommen auf TOOK WAR";
   title.textContent = "";
 
   function typeEffect() {
