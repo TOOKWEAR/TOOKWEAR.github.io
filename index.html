@@ -28,6 +28,34 @@
   <h1>Willkommen auf TOOK WAR</h1>
   <p>Deutschlands Wargear-Server für Action, Turniere & Kreativität.</p>
 </section>
+  <div class="container" id="connect">
+  <h2>Schnell verbinden</h2>
+  <p>Verbinde dich direkt mit unserem Minecraft-Server:</p>
+  <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+    <input type="text" id="serverIP" value="took-wear.gl.joinmc.link" readonly 
+           style="padding:8px; border-radius:5px; border:1px solid #ccc; width:250px;">
+    <button onclick="copyIP()" 
+            style="padding:8px 15px; background:#1f2937; color:#fff; border:none; border-radius:5px; cursor:pointer;">
+      Kopieren
+    </button>
+  </div>
+  <p id="copyMsg" style="color:green; margin-top:5px; display:none;">IP kopiert!</p>
+</div>
+
+<script>
+// Kopieren der IP
+function copyIP() {
+  const ipInput = document.getElementById('serverIP');
+  ipInput.select();
+  ipInput.setSelectionRange(0, 99999); // Für mobile Geräte
+  document.execCommand('copy');
+
+  const msg = document.getElementById('copyMsg');
+  msg.style.display = 'inline';
+  setTimeout(() => { msg.style.display = 'none'; }, 2000);
+}
+</script>
+
 
 <script src="script.js"></script>
 </body>
