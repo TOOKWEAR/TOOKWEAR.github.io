@@ -1,42 +1,141 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8">
-<title>News</title>
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="keywords" content="wargear, Minecraft, Server, Took War, Bau Server, Arena, Deutsch, Turniere, Discord,tookwear,tookwear,took wear">
-<meta name="description" content="TOOK WAR — Deutschlands drittbester Wargear-Server! Baue auf deinem eigenen Bau-Server, kämpfe in Arenen und lerne in Tutorials.">
-<meta property="og:image" content="logo.jpg">
-
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TOOK WAR — News</title>
+  <link rel="stylesheet" href="style.css">
+  <meta name="keywords" content="wargear, Minecraft, Server, Took War, Bau Server, Arena, Deutsch, Turniere, Discord">
+  <meta name="description" content="TOOK WAR — News und Updates direkt vom Server.">
 </head>
 <body>
 
+<!-- Navigation -->
 <nav class="navbar apple-glass">
-<div class="nav-container">
-<a href="index.html" class="nav-link">Home</a>
-<a href="news.html" class="nav-link">News</a>
-</div></nav>
+  <div class="nav-container">
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="about.html" class="nav-link">About</a>
+    <a href="community.html" class="nav-link">Community</a>
+    <a href="events.html" class="nav-link">Events</a>
+    <a href="support.html" class="nav-link">Support</a>
+    <a href="news.html" class="nav-link">News</a>
+  </div>
+</nav>
 
+<!-- News Anzeige -->
 <section class="apple-glass container">
-<h1>Server News</h1>
-<div id="newsContainer"></div>
+  <h1>Server News</h1>
+  <div id="newsContainer"></div>
 </section>
 
+<!-- Admin Login -->
 <section class="apple-glass container" id="adminSection">
-<h2>Admin Login</h2>
-<input type="text" id="adminName" placeholder="Admin Name"><br><br>
-<input type="password" id="adminPass" placeholder="Passwort"><br><br>
-<button onclick="loginAdmin()">Login</button>
+  <h2>Admin Login</h2>
+  <input type="text" id="adminName" placeholder="Admin Name"><br><br>
+  <input type="password" id="adminPass" placeholder="Passwort"><br><br>
+  <button onclick="loginAdmin()">Login</button>
 </section>
 
+<!-- News posten -->
 <section class="apple-glass container" id="postSection" style="display:none;">
-<h2>News posten</h2>
-<input type="text" id="newsTitle" placeholder="Titel"><br><br>
-<textarea id="newsText" placeholder="Text..."></textarea><br><br>
-<button onclick="postNews()">Posten</button>
+  <h2>News posten</h2>
+  <input type="text" id="newsTitle" placeholder="Titel"><br><br>
+  <textarea id="newsText" placeholder="Text..."></textarea><br><br>
+  <button onclick="submitNews()">Posten</button>
 </section>
 
-<script src="script.js"></script>
-</body></html>
+<script type="module">
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+  // -------------------------
+  // Supabase Config
+  // -------------------------
+  const SUPABASE_URL = 'https://bfyoikgpevslairqbrqi.supabase.co';
+  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJmeW9pa2dwZXZzbGFpcnFpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ0MTIyMjAsImV4cCI6MjA3OTk4ODIyMH0.n2w1g4_zybAy286O8yD4xU5HfZuFQZwpruO1qXoJvtMv';
+  const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  const ADMIN_PASS = "2409";
+
+  // -------------------------
+  // Admin Login
+  // -------------------------
+  function loginAdmin() {
+    const name = document.getElementById("adminName").value;
+    const pass = document.getElementById("adminPass").value;
+    if(pass === ADMIN_PASS && name.trim() !== "") {
+      document.getElementById("adminSection").style.display = "none";
+      document.getElementById("postSection").style.display = "block";
+      sessionStorage.setItem("admin", name);
+    } else {
+      alert("Falsches Passwort!");
+    }
+  }
+
+  // -------------------------
+  // Load News
+  // -------------------------
+  async function loadNews() {
+    const { data, error } = await supabase
+      .from('News')
+      .select('*')
+      .order('created_at', { ascending: false });
+    
+    const container = document.getElementById("newsContainer");
+    container.innerHTML = "";
+    
+    if(error) {
+      container.innerHTML = "<p>Fehler beim Laden der News.</p>";
+      console.error(error);
+      return;
+    }
+    
+    if(data.length === 0) {
+      container.innerHTML = "<p>Keine News vorhanden.</p>";
+      return;
+    }
+
+    data.forEach(n => {
+      const div = document.createElement("div");
+      div.className = "apple-glass";
+      div.innerHTML = `
+        <h3>${n.title}</h3>
+        <p>${n.text}</p>
+        <small>${n.author} • ${new Date(n.created_at).toLocaleString()}</small>
+      `;
+      container.appendChild(div);
+    });
+  }
+
+  // -------------------------
+  // Submit News
+  // -------------------------
+  async function submitNews() {
+    const title = document.getElementById("newsTitle").value;
+    const text = document.getElementById("newsText").value;
+    const author = sessionStorage.getItem("admin");
+    
+    if(!title || !text) return alert("Alles ausfüllen!");
+
+    const { data, error } = await supabase
+      .from('News')
+      .insert([{ title, text, author }]);
+    
+    if(error) {
+      alert("Fehler beim Posten der News!");
+      console.error(error);
+      return;
+    }
+
+    document.getElementById("newsTitle").value = "";
+    document.getElementById("newsText").value = "";
+    loadNews();
+  }
+
+  // -------------------------
+  // On page load
+  // -------------------------
+  document.addEventListener("DOMContentLoaded", loadNews);
+</script>
+
+</body>
+</html>
