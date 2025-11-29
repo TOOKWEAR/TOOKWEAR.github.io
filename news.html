@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>News</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="keywords" content="wargear, Minecraft, Server, Took War, Bau Server, Arena, Deutsch, Turniere, Discord,tookwear,tookwear,took wear">
+<meta name="description" content="TOOK WAR — Deutschlands drittbester Wargear-Server! Baue auf deinem eigenen Bau-Server, kämpfe in Arenen und lerne in Tutorials.">
+<meta property="og:image" content="logo.jpg">
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="navbar apple-glass">
+<div class="nav-container">
+<a href="index.html" class="nav-link">Home</a>
+<a href="news.html" class="nav-link">News</a>
+</div></nav>
+
+<section class="apple-glass container">
+<h1>Server News</h1>
+<div id="newsContainer"></div>
+</section>
+
+<section class="apple-glass container" id="adminSection">
+<h2>Admin Login</h2>
+<input type="text" id="adminName" placeholder="Admin Name"><br><br>
+<input type="password" id="adminPass" placeholder="Passwort"><br><br>
+<button onclick="loginAdmin()">Login</button>
+</section>
+
+<section class="apple-glass container" id="postSection" style="display:none;">
+<h2>News posten</h2>
+<input type="text" id="newsTitle" placeholder="Titel"><br><br>
+<textarea id="newsText" placeholder="Text..."></textarea><br><br>
+<button onclick="postNews()">Posten</button>
+</section>
+
+<script src="script.js"></script>
+</body></html>
