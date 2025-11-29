@@ -4,71 +4,66 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TOOK WAR — News</title>
-<link rel="stylesheet" href="style.css">
+<meta name="description" content="TOOK WAR — Deutschlands drittbester Wargear-Server! News & Events.">
+<meta name="keywords" content="wargear, Minecraft, Server, Took War, Bau Server, Arena, Deutsch, Turniere, Discord,tookwear,took wear">
+<style>
+body { font-family: Arial, sans-serif; margin: 20px; background:#f9f9f9; }
+h1, h2 { color: #222; }
+#newsContainer div { border-bottom: 1px solid #ccc; padding: 10px 0; }
+.news-title { font-weight: bold; font-size: 1.2em; }
+.news-text { margin: 5px 0; }
+.news-meta { font-size: 0.8em; color: #555; }
+#adminSection { margin-top: 20px; }
+#adminSection input { margin: 5px 0; padding: 5px; width: 200px; }
+#adminSection button { padding: 5px 10px; }
+</style>
 </head>
 <body>
 
-<h1>Server News</h1>
-<div id="newsContainer"></div>
+<h1>TOOK WAR — Server News</h1>
+<div id="newsContainer">News werden geladen...</div>
 
-<h2>Admin Login</h2>
-<input type="text" id="adminName" placeholder="Admin Name"><br>
-<input type="password" id="adminPass" placeholder="Passwort"><br>
-<button onclick="loginAdmin()">Login</button>
-
-<div id="postSection" style="display:none;">
-  <h2>News posten</h2>
-  <input type="text" id="newsTitle" placeholder="Titel"><br>
-  <textarea id="newsText" placeholder="Text..."></textarea><br>
-  <button onclick="submitNews()">Posten</button>
+<h2>Admin (nur Lesen/Anzeigen der JSON)</h2>
+<div id="adminSection">
+  <p>Du kannst die Datei <strong>news.json</strong> im Repository bearbeiten, um neue News hinzuzufügen.</p>
 </div>
 
 <script>
-const API_URL = 'https://nodejs--cattech3d.replit.app';
-function loginAdmin() {
-  const name = document.getElementById("adminName").value;
-  const pass = document.getElementById("adminPass").value;
-  if(pass === '2409' && name.trim() !== "") {
-    document.getElementById("postSection").style.display = 'block';
-    sessionStorage.setItem('admin', name);
-    alert('Admin eingeloggt');
-  } else {
-    alert('Falsches Passwort');
+// Funktion: News aus news.json laden
+async function loadNews() {
+  try {
+    const res = await fetch('news.json'); // news.json muss im gleichen Ordner liegen
+    const news = await res.json();
+
+    const container = document.getElementById('newsContainer');
+    container.innerHTML = '';
+
+    if(news.length === 0){
+      container.innerHTML = '<p>Keine News vorhanden.</p>';
+      return;
+    }
+
+    // Neueste News zuerst
+    news.sort((a,b) => new Date(b.created_at) - new Date(a.created_at))
+        .forEach(n => {
+          const div = document.createElement('div');
+          div.innerHTML = `
+            <div class="news-title">${n.title}</div>
+            <div class="news-text">${n.text}</div>
+            <div class="news-meta">Autor: ${n.author} • ${new Date(n.created_at).toLocaleString()}</div>
+          `;
+          container.appendChild(div);
+        });
+
+  } catch (err) {
+    document.getElementById('newsContainer').innerHTML = 'Fehler beim Laden der News.';
+    console.error(err);
   }
 }
 
-async function loadNews() {
-  const res = await fetch(`${API_URL}/news`);
-  const data = await res.json();
-  const container = document.getElementById('newsContainer');
-  container.innerHTML = '';
-  data.forEach(n => {
-    const div = document.createElement('div');
-    div.innerHTML = `<h3>${n.title}</h3><p>${n.text}</p><small>${n.author} • ${new Date(n.created_at).toLocaleString()}</small>`;
-    container.appendChild(div);
-  });
-}
-
-async function submitNews() {
-  const title = document.getElementById("newsTitle").value;
-  const text = document.getElementById("newsText").value;
-  const author = sessionStorage.getItem('admin');
-  if(!title || !text) return alert("Alles ausfüllen!");
-
-  const res = await fetch(`${API_URL}/news`, {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({ title, text, author, password: '2409' })
-  });
-  const data = await res.json();
-  if(data.error) return alert(data.error);
-
-  document.getElementById("newsTitle").value = '';
-  document.getElementById("newsText").value = '';
-  loadNews();
-}
-
+// Laden beim Start
 document.addEventListener('DOMContentLoaded', loadNews);
 </script>
+
 </body>
 </html>
