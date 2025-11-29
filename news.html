@@ -7,29 +7,116 @@
 <meta name="description" content="TOOK WAR — Deutschlands drittbester Wargear-Server! News & Events.">
 <meta name="keywords" content="wargear, Minecraft, Server, Took War, Bau Server, Arena, Deutsch, Turniere, Discord,tookwear,took wear">
 <style>
-body { font-family: Arial, sans-serif; margin: 20px; background:#f9f9f9; }
-h1, h2 { color: #222; }
-#newsContainer div { border-bottom: 1px solid #ccc; padding: 10px 0; }
-.news-title { font-weight: bold; font-size: 1.2em; }
+/* --- Allgemein --- */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  background: #f4f4f9;
+  color: #333;
+}
+
+/* --- Navbar --- */
+.navbar {
+  background: #1f2937;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navbar a {
+  color: #fff;
+  text-decoration: none;
+  margin-left: 20px;
+  font-weight: bold;
+  transition: color 0.2s;
+}
+
+.navbar a:hover {
+  color: #facc15;
+}
+
+/* --- Container --- */
+.container {
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 0 15px;
+}
+
+/* --- News --- */
+#newsContainer div {
+  background: #fff;
+  border-radius: 8px;
+  padding: 15px 20px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.news-title { font-weight: bold; font-size: 1.3em; margin-bottom: 5px; }
 .news-text { margin: 5px 0; }
 .news-meta { font-size: 0.8em; color: #555; }
-#adminSection { margin-top: 20px; }
-#adminSection input { margin: 5px 0; padding: 5px; width: 200px; }
-#adminSection button { padding: 5px 10px; }
+
+/* --- Admin Section --- */
+#adminSection {
+  margin-top: 30px;
+  background: #fff;
+  padding: 15px 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+#adminSection input {
+  margin: 5px 0;
+  padding: 8px;
+  width: 100%;
+  max-width: 300px;
+}
+
+#adminSection button {
+  padding: 8px 15px;
+  background: #1f2937;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 5px;
+}
+
+#adminSection button:hover {
+  background: #facc15;
+  color: #000;
+}
 </style>
 </head>
 <body>
 
-<h1>TOOK WAR — Server News</h1>
-<div id="newsContainer">News werden geladen...</div>
+<!-- Navbar -->
+<nav class="navbar">
+  <div class="nav-logo">
+    <strong style="color:#facc15;">TOOK WAR</strong>
+  </div>
+  <div class="nav-links">
+    <a href="#home">Home</a>
+    <a href="#about">About</a>
+    <a href="#news">News</a>
+    <a href="#events">Events</a>
+    <a href="#support">Support</a>
+  </div>
+</nav>
 
-<h2>Admin (nur Lesen/Anzeigen der JSON)</h2>
-<div id="adminSection">
-  <p>Du kannst die Datei <strong>news.json</strong> im Repository bearbeiten, um neue News hinzuzufügen.</p>
+<div class="container" id="home">
+  <h1>Willkommen auf TOOK WAR</h1>
+  <p>Die aktuellsten News findest du hier unten. Admins können die `news.json` im Repository bearbeiten, um neue Beiträge hinzuzufügen.</p>
 </div>
 
+<div class="container" id="news">
+  <h2>Server News</h2>
+  <div id="newsContainer">News werden geladen...</div>
+
+
+
 <script>
-// Funktion: News aus news.json laden
+// --- News laden ---
 async function loadNews() {
   try {
     const res = await fetch('news.json'); // news.json muss im gleichen Ordner liegen
@@ -43,7 +130,6 @@ async function loadNews() {
       return;
     }
 
-    // Neueste News zuerst
     news.sort((a,b) => new Date(b.created_at) - new Date(a.created_at))
         .forEach(n => {
           const div = document.createElement('div');
@@ -61,7 +147,6 @@ async function loadNews() {
   }
 }
 
-// Laden beim Start
 document.addEventListener('DOMContentLoaded', loadNews);
 </script>
 
